@@ -8,7 +8,7 @@ from django.contrib.auth  import get_user_model
 User = get_user_model()
 
 from django import template
-register = template.library()
+register = template.Library()
 
 class Group(models.Model):
     name = models.CharField(max_length=255,unique=True)
@@ -32,8 +32,8 @@ class Group(models.Model):
         ordering = ['name']
 
 class GroupMember(models.Model):
-    group = models.ForeignKey(Group,related_name='memberships',on_delete=models.PROTECT)
-    user = models.ForeignKey(User,related_name='user_groups',on_delete=models.PROTECT)
+    group = models.ForeignKey(Group,related_name='memberships',on_delete=models.CASCADE)
+    user = models.ForeignKey(User,related_name='user_groups',on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
