@@ -7,7 +7,7 @@ from django.contrib import messages
 
 from groups.models import Group,GroupMember
 
-class CreateGroup(LoginRequiredMixin,PermissionRequiredMixin,generic.CreateView):
+class CreateGroup(LoginRequiredMixin,generic.CreateView):
     fields = ('name','description')
     model = Group
 
@@ -42,11 +42,11 @@ class LeaveGroup(LoginRequiredMixin,generic.RedirectView):
     def get(self,request,*args,**kwargs):
 
         try:
-            membership = models.GroupMember.objects.filter(
+            membership = GroupMember.objects.filter(
                 user=self.request.user,
                 group__slug=self.kwargs.get('slug')
             ).get()
-        except models.GroupMember.DoesNotExist:
+        except GroupMember.DoesNotExist:
             messages.warning(self.request,'Sorry you are not in this group!')
         else:
             membership.delete()
